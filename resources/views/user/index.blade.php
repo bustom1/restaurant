@@ -296,7 +296,7 @@
 
 
             <div class="row portfolio-container" style="padding-left: 10%">
-                @foreach ($Produk as $d)
+                @foreach ($produk as $d)
                     <form action="{{ route('order.store') }}" method="post">
                         @csrf
                         <div class="col-lg-3 col-md-6 portfolio-item filter-{{ $d->nama_kategori }} "
