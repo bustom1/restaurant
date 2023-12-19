@@ -25,7 +25,7 @@
         <div class="container-fluid">
             {{-- this content --}}
             <div class="container mt-3">
-                <form action="{{ route('add-clients') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('manager.client.store-p') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row mb-3">
@@ -73,7 +73,7 @@
                         <div class="col-sm-10">
                             <select name="role" id="">
                                 <option class="disable">Pilih Role </option>
-                                <option value="manajer">Manager</option>
+                                <option value="manager">Manager</option>
                                 <option value="kasir">kasir</option>
                                 <option value="client">Client</option>
                             </select>
@@ -86,7 +86,7 @@
                     <div class="row mb-3">
                         <button type="submit" class="btn btn-success text-center">Tambah</button>
                         <button class="btn btn-danger text-center ml-3"><a class="text-light"
-                                href="{{ route('data.clients') }}">kembali</i></a></button>
+                                href="{{ route('manager.client.index') }}">kembali</i></a></button>
                     </div>
                 </form>
             </div>

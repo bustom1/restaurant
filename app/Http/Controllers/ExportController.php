@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Export;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class ExportController extends Controller
@@ -13,7 +15,11 @@ class ExportController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::all();
+        return view('export.index', [
+            'orders' => $orders,
+            'title' => 'Data Order'
+        ]);
     }
 
     /**
@@ -40,10 +46,10 @@ class ExportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Export  $export
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Export $export)
     {
         //
     }
@@ -51,10 +57,10 @@ class ExportController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Export  $export
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Export $export)
     {
         //
     }
@@ -63,10 +69,10 @@ class ExportController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Export  $export
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Export $export)
     {
         //
     }
@@ -74,10 +80,10 @@ class ExportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Export  $export
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Export $export)
     {
         //
     }

@@ -73,7 +73,7 @@
                         <div class="col-sm-10">
                             <select name="role" id="">
                                 <option value="{{ $user->role }}">{{ $user->role }}</option>
-                                <option value="manajer">Manager</option>
+                                <option value="manager">Manager</option>
                                 <option value="kasir">kasir</option>
                                 <option value="client">Client</option>
                             </select>

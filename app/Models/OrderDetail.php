@@ -15,12 +15,14 @@ class OrderDetail extends Model
     protected $primaryKey = 'id_order_details';
 
     // order detail memiliki 1 order saja
-    public function Order(){
-        return $this->belongsTo(Order::class,'id_order_details', 'order_id');
+    public function Order()
+    {
+        return $this->belongsTo(Order::class, 'id_order_details', 'order_id');
     }
 
     // // order detail memilki 1 paket saja
-    public function Produk(){
-        return $this->belongsTo(Paket::class);
+    public function Produk()
+    {
+        return $this->belongsTo(Produk::class);
     }
 }

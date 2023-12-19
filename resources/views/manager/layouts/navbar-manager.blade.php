@@ -9,14 +9,27 @@
             <a class="nav-link">
                 <i class="fa fa-user pr-1"></i>
                 <span> Selamat Datang {{ Auth::user()->name }}</span>
-
             </a>
         </li>
+        {{-- <li class="nav-item d-none d-sm-inline-block dropdown ">
+            <a class="btn-theme btn" style="background-color: #ffffff; border-radius: 15px" href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();">Logout</a>&nbsp;
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </li> --}}
 
     </ul>
 
+
+
+
+
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto pr-3">
+       
         <!-- Messages Dropdown Menu -->
         {{-- <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -76,9 +89,9 @@
             </div>
         </li> --}}
 
-
+       
         <!-- Notifications Dropdown Menu -->
-        {{-- <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">15</span>
@@ -104,7 +117,21 @@
                 <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
 
             </div>
-        </li> --}}
+        </li>
+
+
+
+         <!-- Butoon LogOut -->
+         <li class="nav-item d-none d-sm-inline-block dropdown pl-3">
+            <a href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+            document.getElementById('logout-form').submit();"><i class=""></i> Logout</a>&nbsp;
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </li>
+
 
     </ul>
 </nav>

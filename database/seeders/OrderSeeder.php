@@ -15,7 +15,7 @@ class OrderSeeder extends Seeder
     public function run()
     {
         $order=Order::create([
-            'user_id' => '2',
+            'user_id' => '3',
             'no_order' => '100',
             'bayar' => '20000',
             'total_bayar' => '2000',

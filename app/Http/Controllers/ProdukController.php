@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use App\Models\ProdukKategory;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Blade;
 use App\Http\Requests\StoreProdukRequest;
 use App\Http\Requests\UpdateProdukRequest;
-use Illuminate\Support\Facades\File;
 
 
 class ProdukController extends Controller
@@ -20,6 +21,9 @@ class ProdukController extends Controller
 
     public function index()
     {
+        Blade::directive('currency', function ($expression) {
+            return "Rp. <?php echo number_format($expression,0,',','.'); ?>";
+        });
         $kategori = ProdukKategory::all();
         $produks = Produk::all();
         return view('manager.product.index', compact('produks', 'kategori'));

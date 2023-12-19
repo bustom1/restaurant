@@ -24,10 +24,12 @@
             margin-top: 10%;
         }
 
-        i:hover,
-        .link:hover {
+        .link:hover,
+        .fa:hover {
             cursor: pointer;
             color: burlywood;
+            transition: all .2s ease-in-out;
+            transform: scale(1.5);
         }
     </style>
 
@@ -35,7 +37,7 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg bg-body-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,21 +67,36 @@
             <!-- Main content -->
             <div class="container">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-6">
 
-                         @guest
-                             <h1 class="text-center judul text-light ">{{ __('Selamat Datang di Resto Kami!') }}</h1><br />
-                        @else 
-                            <h1 class="text-center judul text-light ">Selamat Datang {{ Auth::user()->name }}</h1><br />
-                        @endguest 
-
-                        <h1 class="text-center link text-light"><a href="{{ route('client.index') }}"
-                                class="text-light">{{ __('Lihat menu') }}<i class="fa-solid fa-angles-right"></i></a>
+                        <h1 class="text-light  text-justify mb-5">{{ __('Selamat datang di situs web kami!') }}
                         </h1>
-                        <br />
+                        <p class="text-light text-justify">{{ __('Jelajahi kelezatan yang memukau dari hidangan dan
+                            minuman
+                            favorit kami di sini. Dari hidangan
+                            lezat hingga minuman yang
+                            menyegarkan, kami menghadirkan pengalaman kuliner penuh cita rasa untuk memanjakan lidah
+                            Anda.')}}</p>
+                        <p class="text-light text-justify"> {{ __('Jangan lewatkan kesempatan untuk menjelajahi menu
+                            istimewa
+                            kami yang pasti akan memikat
+                            selera Anda. Temukan sensasi
+                            kuliner yang tak terlupakan di sini!')}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="img-fluid " src="{{ asset('img/menu-makanan.png') }}" alt="" width=100% height=100%>
                     </div>
                 </div>
                 <div class="row mt-5">
+                    <div class="col ">
+                        <h1 class="text-center link text-light"><a href="{{ route('client.index') }}"
+                                class="text-light">{{ __('Lihat menu')
+                                }} <i class="fa-solid fa-angles-right"></i></a>
+                        </h1>
+
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col text-center">
                         <i class="fa fa-instagram text-light m-3"></i>
                         <i class="fa fa-facebook text-light m-3"></i>
@@ -96,4 +113,5 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
 </body>
+
 </html>

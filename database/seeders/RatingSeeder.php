@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Rating;
+use App\Models\ReviewRating;
 use Illuminate\Database\Seeder;
 
 class RatingSeeder extends Seeder
@@ -15,12 +15,12 @@ class RatingSeeder extends Seeder
     public function run()
     {
         //data dummy
-        $rating=Rating::create([
-            'id_ratings' => 6,
-            'user_name' => 'John Smith',
-            'user_rating' => 4,
-            'user_review' => 'Nice Product, Value for money',
-            'datetime' => 1621935691,
+        $rating=ReviewRating::create([
+            'user_id' => 3,
+            'name' => 'KELOMPOK 3 ',
+            'comments' => 'MANTAP, KERJA BAGUS',
+            'star_rating' => 5,
+            'status' => 'active',
         ]); 
     }
 }

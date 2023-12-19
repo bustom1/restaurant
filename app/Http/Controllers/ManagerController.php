@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Produk;
-use App\Models\Rating;
+use App\Models\ReviewRating;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,7 +22,7 @@ class ManagerController extends Controller
         $produks = Produk::all();
         $users = User::all();
         $orders = Order::all();
-        $ratings = Rating::all();
+        $ratings = ReviewRating::all();
         return view('manager.dashboard-manager', compact('produks', 'users', 'orders', 'ratings'));
     }
 

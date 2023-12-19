@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rating;
+use App\Models\ReviewRating;
 use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateRatingRequest;
 
@@ -15,11 +15,18 @@ class RatingController extends Controller
      */
     public function index()
     {
-        $ratings = Rating::all();
+
+        $ratings = ReviewRating::all();
         return view('rating.index', [
             'ratings' => $ratings,
             'title' => 'Data Rating'
         ]);
+
+        // $ratings = Rating::all();
+        // return view('rating.index', [
+        //     'ratings' => $ratings,
+        //     'title' => 'Data Rating'
+        // ]);
     }
 
     /**
@@ -51,9 +58,9 @@ class RatingController extends Controller
      * @param  \App\Models\Rating  $rating
      * @return \Illuminate\Http\Response
      */
-    public function show(Rating $rating)
+    public function show(ReviewRating $rating)
     {
-        //
+
     }
 
     /**
@@ -62,9 +69,11 @@ class RatingController extends Controller
      * @param  \App\Models\Rating  $rating
      * @return \Illuminate\Http\Response
      */
-    public function edit(Rating $rating)
+    public function edit($id)
     {
         //
+        $rating = ReviewRating::where('user_name', $id)->firstOrFail();
+        return view('rating.edit', compact('rating'));
     }
 
     /**
@@ -74,7 +83,7 @@ class RatingController extends Controller
      * @param  \App\Models\Rating  $rating
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRatingRequest $request, Rating $rating)
+    public function update(UpdateRatingRequest $request, ReviewRating $rating)
     {
         //
     }
@@ -85,11 +94,9 @@ class RatingController extends Controller
      * @param  \App\Models\Rating  $rating
      * @return \Illuminate\Http\Response
      */
-    public function destroy($user_name)
+    public function destroy(reviewRating $rating)
     {
-        $rating = Rating::where('user_name', $user_name)->firstOrFail();
         $rating->delete();
-
-        return redirect()->route('rating.index')->with('success', 'Rating berhasil dihapus');
+        return redirect()->route('rating.index')->with('success', 'Order berhasil dihapus');
     }
 }

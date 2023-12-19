@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\User;
+// use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\QueryException;
 
 class ClientController extends Controller
@@ -46,7 +47,7 @@ class ClientController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:tbl_users,email',
+            'email' => 'required|unique:users,email',
             'password' => 'required|min:6',
             'phone' => 'required',
             'role' => 'required|max:50',
@@ -69,10 +70,10 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Client $client)
+    public function show(User $user)
     {
         //
     }
@@ -80,7 +81,7 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function edit($id_users)
@@ -96,10 +97,10 @@ class ClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $user)
+    public function update(Request $request, User $user)
     {
         // Validasi data yang diterima dari formulir
         $request->validate([
@@ -137,13 +138,23 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\User  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $user)
+    public function destroy($clients)
     {
-        $user->delete();
+        $client = User::find($clients);
 
-        return redirect()->route('manager.client.index')->with('success', 'Data Berhasil di Hapus');
+        if (!$client) {
+            return redirect()->route('manager.client.index')->with('failed', 'Data tidak ditemukan');
+        }
+
+        $delete = $client->delete();
+
+        if ($delete) {
+            return redirect()->route('manager.client.index')->with('success', 'Data berhasil dihapus');
+        } else {
+            return redirect()->route('manager.client.index')->with('failed', 'Data gagal dihapus');
+        }
     }
 }
