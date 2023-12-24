@@ -1,4 +1,25 @@
 @extends('manager.layouts.master')
+@section('javascript')
+<script>
+    $(function () {
+    $("#example1").DataTable({
+    "responsive": true, "lengthChange": false, "autoWidth": false,
+    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+    "paging": true,
+    "lengthChange": false,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true,
+    });
+    });
+</script>
+
+
+@endsection
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -97,30 +118,113 @@
             <!-- /.row -->
         </div>
         <!-- /.row -->
+
+        <!-- /.row -->
         <div class="row">
-            <div class="col-md-12 ">
+            <div class="col-md-12">
                 <div class="card ">
                     <div class="card-header bg-info">
                         <h5 class="card-title">Monthly Recap Report</h5>
-                    </div>
-                    <div class="card-header bg-info">
-                        @php
-                        $bulan = now()->month; // Mengambil bulan saat ini
-                        $salesMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
 
-                        $year = now()->years(); // Mengambil tahun saat ini
-                        $salesYears = \App\Models\Order::whereYear('created_at', $year)->get();
-                        @endphp
-                        {{ __('Sales: :month', ['month' => now()->monthName . ', ' . now()->year]) }}
-
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fas fa-wrench"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a href="#" class="dropdown-item">Action</a>
+                                    <a href="#" class="dropdown-item">Another action</a>
+                                    <a href="#" class="dropdown-item">Something else here</a>
+                                    <a class="dropdown-divider"></a>
+                                    <a href="#" class="dropdown-item">Separated link</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body bg-info">
+                    <div class="card-body bg-secondary">
                         <div class="row">
                             <div class="col">
+                                @php
+                                $bulan = now()->month; // Mengambil bulan saat ini
+                                $salesMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
+
+                                $year = now()->years(); // Mengambil tahun saat ini
+                                $salesYears = \App\Models\Order::whereYear('created_at', $year)->get();
+                                @endphp
+                                {{ __('Sales: :month', ['month' => now()->monthName . ', ' . now()->year]) }}
+
+                                <!-- TABLE: LATEST ORDERS -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title text-dark "><b>Data Penjualan</b></h4>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <table id="example1" class="table table-bordered table-striped text-dark">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Order ID</th>
+                                                    <th>No Ordder</th>
+                                                    <th>No Meja</th>
+                                                    <th>Status</th>
+                                                    <th>Total Terbayar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($orders as $row )
+
+                                                <tr>
+                                                    <td>{{$loop->iteration}}.</td>
+                                                    <td><a href="{{ asset('assets/pages/examples/invoice.html') }}">Ords{{
+                                                            $row->id_orders
+                                                            }}</a>
+                                                    </td>
+                                                    <td>{{ $row->no_order }}</td>
+                                                    <td>M-{{ $row->user_id }}</td>
+                                                    <td><span class="badge {{ ($row->status == 'Bayar')? 'badge-success' :
+                                                    'badge-warning';}}  ">{{ $row->status
+                                                            }}
+                                                        </span>
+                                                        @if ($row->status == 'Bayar')
+                                                        <i class="fa fa-solid fa-check text-success"></i>
+                                                        @endif
+                                                        @if ($row->status == 'Proses')
+                                                        <i class="fa fa-solid fa-hourglass-half text-warning"></i>
+                                                        @endif
+
+                                                    </td>
+                                                    <td>Rp. {{ number_format($row->total_bayar ,0,',','.') }}</td>
+                                                </tr>
+
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+
+                        </div>
+                        <!-- /.row -->
+                        <div class="row bg-dark pt-2">
+                            <div class="col">
                                 <p class="text-center">
-                                    <strong>Goal Completion</strong>
+                                    <strong>{{ ('Pencapaian Target') }}</strong>
                                 </p>
+                            </div>
+                        </div>
+                        <div class="row bg-dark mb-5 p-4">
+                            <div class="col">
                                 <div class="progress-group">
                                     Total Order
                                     @php
@@ -139,51 +243,44 @@
                                 </div>
                                 <!-- /.progress-group -->
                                 <div class="progress-group">
-                                    <span class="progress-text">Purchase Pending</span>
+                                    <span class="progress-text">Pembelian dalam proses</span>
                                     @php
                                     $bulan = now()->month();
                                     // mengambil data order sesuai orderan di bulan tertentu
                                     $pendingMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
-                                    $totalPending = $pendingMonthly->where('status','proses')->count();
+                                    $totalPending = $pendingMonthly->where('status','Proses')->count();
                                     $targetOrder = 1000;
                                     $persentasePending = ($totalPending / $targetOrder) * 100;
                                     @endphp
 
-                                    <span class="float-right"><b>{{ $totalPending }}</b>/{{ $targetOrder }}</span>
+                                    <span class="float-right"><b>{{ $totalPending }}</b>/Proses</span>
                                     <div class="progress progress-sm">
                                         <div class="progress-bar bg-info" style="width: {{ $persentasePending }}%">
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /.progress-group -->
-
                                 <div class="progress-group">
-                                    Purchase Completed
+                                    Pembelian Selesai
                                     @php
                                     $bulan = now()->month();
                                     // mengambil data order sesuai orderan di bulan tertentu
                                     $orderCompleteMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
-                                    $totalOrderComplete = $orderCompleteMonthly->where('status', 'bayar')->count();
+                                    $totalOrderComplete = $orderCompleteMonthly->where('status', 'Bayar')->count();
                                     $targerOrder = 1000;
                                     $persentaseComplete = ($totalOrderComplete / $targetOrder) * 100;
                                     @endphp
-                                    <span class="float-right"><b>{{ $totalOrderComplete }}</b>/{{ $targetOrder }}</span>
+                                    <span class="float-right"><b>{{ $totalOrderComplete }}</b>/selesai</span>
                                     <div class="progress progress-sm">
                                         <div class="progress-bar bg-succes" style="width: {{ $persentaseComplete }}%">
                                         </div>
                                     </div>
                                 </div>
-
-
+                                <!-- /.progress-group -->
                             </div>
                             <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- ./card-body -->
-                    <div class="card-footer bg-dark bg-opacity-100">
-                        <div class="row">
-                            <div class="col-sm-4 col-6">
+
+                            <div class="col-md-3">
                                 <div class="description-block border-right">
                                     @php
                                     $bulan = now()->month();
@@ -209,14 +306,13 @@
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
-                            <!-- /.col -->
-                            <div class="col-sm-4 col-6">
+                            <div class="col-md-3">
                                 <div class="description-block border-right">
                                     @php
                                     $bulan = now()->month();
                                     // mengambil data order sesuai orderan di bulan tertentu
                                     $totalBayarMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
-                                    $targetProfit_bulan = 100000000; // Ganti dengan nilai target profit yang diinginkan
+                                    $targetProfit_bulan = 100000000;
                                     $modal = 10000000;
                                     $keuntungan = $totalTerbayar - $modal;
                                     $persentaseKeuntungan = ($keuntungan / $targetProfit_bulan) * 100;
@@ -236,8 +332,8 @@
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
-                            <div class="col-sm-4 col-6">
-                                <div class="description-block">
+                            <div class="col-md-3">
+                                <div class="description-block ">
                                     <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i>
                                         80%</span>
                                     <h5 class="description-header">100</h5>
@@ -245,10 +341,12 @@
                                 </div>
                                 <!-- /.description-block -->
                             </div>
+                            <!-- /.col -->
+
                         </div>
-                        <!-- /.row -->
+                        {{-- /.row --}}
                     </div>
-                    <!-- /.card-footer -->
+                    <!-- ./card-body -->
                 </div>
                 <!-- /.card -->
             </div>
@@ -259,3 +357,29 @@
 </section>
 </div>
 @endsection
+<script>
+    // Contoh data dan konfigurasi
+    var pieChartData = {
+        labels: ["Label 1", "Label 2", "Label 3"],
+        datasets: [{
+            data: [30, 50, 20],
+            backgroundColor: ["#f56954", "#00a65a", "#f39c12"]
+        }]
+    };
+
+    // Contoh konfigurasi untuk pie chart
+    var pieChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+    };
+
+    // Ambil elemen canvas dengan ID "pieChart"
+    var pieChartCanvas = document.getElementById('pieChart').getContext('2d');
+
+    // Buat objek Chart
+    var pieChart = new Chart(pieChartCanvas, {
+        type: 'doughnut',
+        data: pieChartData,
+        options: pieChartOptions
+    });
+</script>

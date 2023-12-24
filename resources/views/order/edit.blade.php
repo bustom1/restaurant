@@ -53,8 +53,7 @@
                     <div class="row mb-3">
                         <label for="order" class="col-sm-2 col-form-label">Bayar</label>
                         <div class="col-sm-10">
-                            <input name="bayar" type="text" class="form-control" id="order"
-                                value="{{ $order->bayar }}">
+                            <input name="bayar" type="text" class="form-control" id="order" value="{{ $order->bayar }}">
                             @error('bayar')
                             <small class="text-red">{{ $message }}</small>
                             @enderror
@@ -73,8 +72,10 @@
                     <div class="row mb-3">
                         <label for="order" class="col-sm-2 col-form-label">Status</label>
                         <div class="col-sm-10">
-                            <input name="status" type="text" class="form-control" id="order"
-                                value="{{ $order->status }}">
+                            <select name="status" value="{{ $order->status }}">
+                                <option value="Proses">Proses</option>
+                                <option value="Bayar">Terima Pembayaran</option>
+                            </select>
                             @error('status')
                             <small class="text-red">{{ $message }}</small>
                             @enderror

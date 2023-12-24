@@ -51,8 +51,12 @@ class OrderController extends Controller
         $action = $request->input('action');
 
         $orderFirst = Order::orderBy('id_orders', 'desc')->first();
-        $noOrder = $orderFirst['id_orders'];
-
+        // $noOrder = $orderFirst['id_orders'];
+        if ($orderFirst !== null) {
+            $noOrder = $orderFirst['id_orders'];
+        } else {
+            $noOrder = 1;
+        }
         if ($action === 'buy_now') {
             if ($orderFirst == null) {
                 $noOrder = 1;
@@ -81,7 +85,7 @@ class OrderController extends Controller
             $order_detail->harga = $request->harga;
             $order_detail->total_harga = $request->jumlah * $request->harga;
             $order_detail->save();
-            
+
 
             return redirect()->route('client.index')->with('success', 'Order successfully created.');
         } elseif ($action === 'add_to_cart') {
@@ -90,12 +94,12 @@ class OrderController extends Controller
             $productName = $request->product_name;
             $productPrice = $request->harga;
             $quantity = $request->jumlah; // Assuming you have a quantity input
-    
+
             Cart::add($productId, $productName, $quantity, $productPrice);
             Cart::total();
-    
+
             // The rest of your order/store logic
-    
+
             return redirect()->back()->with('success', 'Item added to cart successfully');
         }
     }

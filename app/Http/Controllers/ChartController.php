@@ -34,14 +34,22 @@ class ChartController extends Controller
         $dataOrder = $request->cart_items;
 
         $orderFirst = Order::orderBy('id_orders', 'desc')->first();
-        $noOrder = $orderFirst['id_orders'];
+        // $noOrder = $orderFirst['id_orders'];
 
-        if ($orderFirst == null) {
-            $noOrder = 1;
-            $newNoOrder = Carbon::now()->format('Ymd') . str_pad($noOrder, 3, '0', STR_PAD_LEFT);
+        // if ($orderFirst == null) {
+        //     $noOrder = 1;
+        //     $newNoOrder = Carbon::now()->format('Ymd') . str_pad($noOrder, 3, '0', STR_PAD_LEFT);
+        // } else {
+        //     $newNoOrder = Carbon::now()->format('Ymd') . str_pad($noOrder, 3, '0', STR_PAD_LEFT);
+        // }
+        if ($orderFirst !== null) {
+            $noOrder = $orderFirst['id_orders'];
         } else {
-            $newNoOrder = Carbon::now()->format('Ymd') . str_pad($noOrder, 3, '0', STR_PAD_LEFT);
+            $noOrder = 1;
         }
+
+        $newNoOrder = Carbon::now()->format('Ymd') . str_pad($noOrder, 3, '0', STR_PAD_LEFT);
+
 
         $order = new Order();
         $order->user_id = $request['user_id'];

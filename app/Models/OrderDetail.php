@@ -19,6 +19,10 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(Order::class, 'id_order_details', 'order_id');
     }
+    public function order_detail()
+    {
+        return $this->hasMany(OrderDetail::class, 'order_id');
+    }
 
     // // order detail memilki 1 paket saja
     public function Produk()
