@@ -5,66 +5,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 @endsection
 
-@section('javascript')
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
-{{-- <script>
-    $(function() {
-            "columns": [
-            { "data": "id" },
-            { "data": "nama" },
-            { "data": "harga" },
-            // ...
-        ]
-            $('#data-tabel').DataTable();
-        });
-</script> --}}
-<script>
-    // alert pembayran berhasil di konfirmasi
-    $(function () {
-        var Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 10000,
-        });
-
-        $(".swalDefaultSuccess").click(function () {
-        Toast.fire({
-        icon: "success",
-        title: "Yeah, Pembayaran sudah di konfirmasi !",
-        });
-        });
-
-        $(".confirmDelete").click(function(event){
-            event.preventDefault();
-
-            Swal.fire({
-                title: "Apa kamu yakin?",
-                text: "Data akan terhapus permanen!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, hapus!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // jika tmbol yes d tekan makan akan di jalankan route delete 
-                    window.location.href = $(this).attr('href');
-                Swal.fire({
-                title: "Terhapus!",
-                text: "Data sudah Terhapus!",
-                icon: "success"
-                });
-                }
-            });
-        })
-    });
-
-</script>
-@endsection
-
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -128,22 +68,16 @@
                                 Tidak ada detail pesanan
                                 @endif
                             </td>
-                            <td>{{ $order->total_bayar }}</td>
+                            <td>Rp. {{ number_format($order->total_bayar,0,',','.') }}</td>
                             <td>{{ $order->status }}</td>
                             <td class="text-center">
-                                {{-- <a href="{{ route('order.edit', ['order' => $order->id_orders]) }}"
-                                    data-toggle="modal" data-target="#modal-info-{{ $order->id_orders }}"
-                                    data-id="{{ $order->id_orders }}">
-                                    <i class="fa fa-solid fa-money-check text-dark"></i>
-                                </a> --}}
                                 <button class="btn btn-outline-success btn-sm mb-1" data-toggle="modal"
                                     data-target="#modal-info-{{ $order->id_orders }}"
                                     data-id="{{ $order->id_orders }}"><i
                                         class="fa fa-solid fa-money-check text-success  "></i>
                                 </button>
-                                <a class="btn btn-outline-danger btn-sm mb-1 confirmDelete" {{--
-                                    onclick="return confirm('apakah kamu yakin ?Data tidak dapat diulang kembali !')"
-                                    --}} href="{{ route('order.delete', ['order' => $order->id_orders]) }}"><i
+                                <a class="btn btn-outline-danger btn-sm mb-1 confirmDelete"
+                                    href="{{ route('order.delete', ['order' => $order->id_orders]) }}"><i
                                         class="fa fa-trash"></i>
                                 </a>
                             </td>
@@ -171,8 +105,7 @@
                             <input type="hidden" name="id_orders" value="{{ $order->id_orders }}">
 
                             <div class="row mb-3">
-                                <label for="order" class="col-sm-2 col-form-label">No
-                                    Order</label>
+                                <label for="order" class="col-sm-2 col-form-label">No Order</label>
                                 <div class="col-sm-10">
                                     <input name="no_order" type="text" class="form-control" id="order"
                                         value="{{ $order->no_order }}">
@@ -182,8 +115,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="order" class="col-sm-2 col-form-label">No
-                                    Order</label>
+                                <label for="order" class="col-sm-2 col-form-label">No Order</label>
                                 <div class="col-sm-10">
                                     <input name="no_order" type="text" class="form-control" id="order"
                                         value="{{ $order->no_order }}">
@@ -203,8 +135,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="order" class="col-sm-2 col-form-label">Total
-                                    Bayar</label>
+                                <label for="order" class="col-sm-2 col-form-label">Total Bayar</label>
                                 <div class="col-sm-10">
                                     <input name="total_bayar" type="text" class="form-control" id="order"
                                         value="{{ $order->total_bayar }}">
@@ -216,10 +147,9 @@
                             <div class="row mb-3">
                                 <label for="order" class="col-sm-2 col-form-label">Status</label>
                                 <div class="col-sm-10">
-                                    <select name="status" autofocus>
-                                        <option class="btn btn-success" value="Bayar">Terima
-                                            Pembayaran</option>
-                                        <option class="btn btn-warning" value="Proses">Proses</option>
+                                    <select name="status" value="{{ $order->status }}">
+                                        <option value="Bayar" class="text-success">Terima Pembayaran</option>
+                                        <option value="Proses" class="text-warning">Proses</option>
                                     </select>
                                     @error('status')
                                     <small class="text-red">{{ $message }}</small>
@@ -227,8 +157,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <button type="submit" class="btn btn-success text-center swalDefaultSuccess"
-                                    id="konfirmasiBtn">Konfirmasi</button>
+                                <button class="btn btn-success text-center konfirmasiBtn">Konfirmasi</button>
                                 <button class="btn btn-danger text-center ml-3"><a class="text-light"
                                         href="{{ route('order.index') }}">kembali</i></a></button>
                             </div>
@@ -244,4 +173,105 @@
         @endforeach
     </section>
 </div>
+@endsection
+
+@section('javascript')
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+{{-- <script>
+    $(function() {
+        "columns": [
+            { "data": "id" },
+            { "data": "nama" },
+            { "data": "harga" },
+            // ...
+            ]
+            $('#data-tabel').DataTable();
+        });
+</script> --}}
+
+{{-- alert --}}
+<script>
+    $(document).ready(function () {
+        $('#data-table').DataTable();
+        // alert pembayaran berhasil
+    $(".konfirmasiBtn").click(function (e) {
+    e.preventDefault();
+    // menghapus alert validasi sebeleumnya
+    swal.close();
+    
+    // cek koolom apakah ada yang tidak di isi
+    var emptyFields = $(this).closest('form').find('input[type="text"]').filter(function (){
+    return $.trim($(this).val()) === '';
+    });
+    
+    if(emptyFields.length > 0){
+    //jika ada kolom tidak di isi tidak menampilkan alert
+    Swal.fire({
+    position: "top-end",
+    icon: "warning",
+    title: "semua kolom harus di isi!",
+    showConfirmButton: false,
+    timer: 1500
+    });
+    } else {
+    // menampilkan alert konfirmasi jika suskses
+    Swal.fire({
+    position: "top-end",
+    icon: "success",
+    title: "Pembayaran Telah di konfirmasi",
+    showConfirmButton: false,
+    timer: 1500
+    });
+    
+    setTimeout(() => {
+    $(this).closest('form').submit();
+    }, 1500);
+    }
+    });
+        // konfirmasi delete 
+        $(".confirmDelete").click(function(event){
+            event.preventDefault();
+            const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+            title: "Apa kamu yakin?",
+            text: "Data akan terhapus permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, !" ,
+            cancelButtonText: "Batal!",
+            reverseButtons: true
+            }).then((result) => {
+            if (result.isConfirmed) {
+                // hapus data dengan menajalankan route pada atribut href di tombol delete
+                setTimeout(() => {
+                window.location.href = $(this).attr('href');
+                }, 1500);
+            swalWithBootstrapButtons.fire({
+            title: "Terhapus!",
+            text: "Data berhasil di hapus 👌",
+            icon: "success"
+            });
+            } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+            ) {
+            swalWithBootstrapButtons.fire({
+            title: "Batal",
+            text: "Data Aman 😊",
+            icon: "error"
+            });
+            }
+            });
+        })
+    });
+
+</script>
 @endsection

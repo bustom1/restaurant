@@ -25,8 +25,7 @@ class OrderController extends Controller
         $orders = Order::with(['OrderDetail', 'User'])->get();
         $cartItems = Cart::content();
 
-        // return  $orders;
-        return view('order.index', compact('orders', 'cartItems'));
+        return view('order.index', compact('orders', 'cartItems'))->with('payment_notification', session('payment_notification'));;
     }
 
     /**
@@ -87,7 +86,7 @@ class OrderController extends Controller
             $order_detail->save();
 
 
-            return redirect()->route('client.index')->with('success', 'Order successfully created.');
+            return redirect()->route('client.index')->with('success', 'Order successfully created.')->with('payment_notification', true);
         } elseif ($action === 'add_to_cart') {
 
             $productId = $request->id_produk;

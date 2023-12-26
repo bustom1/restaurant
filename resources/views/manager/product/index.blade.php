@@ -10,12 +10,55 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 <script>
-    $(function() {
-            $('#data-tabel').DataTable();
+    $(document).ready(function () {
+        // data tabel
+        $('#data-tabel').DataTable();
+
+        // konfirmasi delete
+        $(".deleteButton").click(function (event) {
+            event.preventDefault();
+            
+            const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+                title: "Apa kamu yakin?",
+                text: "Data akan terhapus secara permanen!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal!",
+                reverseButtons: true
+            }).then((result) => {
+            if (result.isConfirmed) {
+                // hapus data 
+                setTimeout(() => {
+                window.location.href = $(this).attr('href');
+                }, 1500);
+                
+            swalWithBootstrapButtons.fire({
+            title: "Terhapus!",
+            text: "Data berhasil terhapus 👌",
+            icon: "success"
+            });
+            } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+            ) {
+            swalWithBootstrapButtons.fire({
+            title: "Hapus data dibatalkan",
+            text: "Selamat data anda aman 😊 ",
+            icon: "error"
+            });
+            }
+            });
         });
+    });
 </script>
-
-
 @endsection
 
 @section('content')
@@ -79,8 +122,7 @@
                                 <a class="btn btn-outline-success btn-sm mb-1 "
                                     href="{{ route('produk.edit', $row->id_produks) }}"><i class="fa fa-edit small"></i>
                                 </a>
-                                <a class="btn btn-outline-danger btn-sm mb-1 "
-                                    onclick="return confirm('Apakah anda yakin ?')"
+                                <a class="btn btn-outline-danger btn-sm mb-1 deleteButton"
                                     href="{{ route('produk.delete', $row->id_produks) }}"><i class="fa fa-trash"></i>
                                 </a>
 

@@ -12,8 +12,58 @@
 
 <script>
     $(function() {
+        // datatable
     $('#data-tabel').DataTable();
     });
+
+    var Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1500,
+    });
+
+    // konfirmasi delete client
+    $(".confirmDelete").click(function(event){
+        event.preventDefault();
+            const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+    });
+        swalWithBootstrapButtons.fire({
+            title: "Apa kamu yakin?",
+            text: "Data akan terhapus permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, !" ,
+            cancelButtonText: "Batal!",
+            reverseButtons: true
+        }).then((result) => {
+    if (result.isConfirmed) {
+        // hapus data dengan menajalankan route pada atribut href di tombol delete
+        setTimeout(() => {
+            window.location.href = $(this).attr('href');
+        }, 1500);
+            swalWithBootstrapButtons.fire({
+            title: "Terhapus!",
+            text: "Data berhasil di hapus 👌",
+            icon: "success"
+        });
+        } else if (
+        /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+            ) {
+            swalWithBootstrapButtons.fire({
+            title: "Batal",
+            text: "Data Aman 😊",
+            icon: "error"
+        });
+        }
+        });
+    })
 </script>
 @endsection
 
@@ -45,7 +95,7 @@
                 <a class="btn btn-info mb-3" href="{{ route('manager.index') }}"><i class="fa fa-arrow-left"></i></a>
                 <a class="btn btn-info mb-3" href="{{ route('manager.client.create') }}"><i
                         class="fa-solid fa-circle-plus"></i>
-                    Data
+                    + Data
                     Client's</a>
                 <table class="table table-hover" id="data-tabel">
                     <thead>
@@ -60,7 +110,7 @@
                     </thead>
                     <tbody>
                         @php
-                            $no = 1;
+                        $no = 1;
                         @endphp
                         @foreach ($user as $row)
                         <tr>
@@ -76,8 +126,7 @@
                                         class="fa fa-edit small"></i>
                                 </a>
 
-                                <a class="btn btn-outline-danger btn-sm mb-1 "
-                                    onclick="return confirm('Apakah anda yakin ?')"
+                                <a class="btn btn-outline-danger btn-sm mb-1 confirmDelete"
                                     href="{{ route('manager.client.delete', ['clients' => $row->id]) }}"><i
                                         class="fa fa-trash"></i>
                                 </a>

@@ -75,6 +75,6 @@ class ChartController extends Controller
         OrderDetail::insert($dataOrderDetail);
         Cart::destroy();
 
-        return redirect()->route('client.index')->with('success', 'Order successfully created.');
+        return redirect()->route('client.index')->with('success', 'Terimaksih')->with('payment_notification', true);
     }
 }

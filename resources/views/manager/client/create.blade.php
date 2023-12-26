@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <button type="submit" class="btn btn-success text-center">Tambah</button>
+                        <button type="button" class="btn btn-success text-center tambah">Tambah</button>
                         <button class="btn btn-danger text-center ml-3"><a class="text-light"
                                 href="{{ route('manager.client.index') }}">kembali</i></a></button>
                     </div>
@@ -97,4 +97,38 @@
 </div>
 </section>
 </div>
+@endsection
+@section('javascript')
+
+<script>
+    $(function () {
+   
+    $('.tambah').click(function (e) {
+    e.preventDefault();
+    swal.close();
+    
+    // cek apakaah ada kolom yang tidak di isi
+        var emptyFields = $(this).closest('form').find('input[type="text"]').filter(function () { 
+            return $.trim($(this).val()) == '';
+        });
+// pengecekan kolom jika tidak di isi tidak menampilkan alert
+        if(emptyFields.length > 0){
+            $(this).closest('form').submit();
+            } else {
+            // Tampilkan alert sukses jika semua kolom diisi
+            Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Data berhasil ditambahkan",
+            showConfirmButton: false,
+            timer: 1500
+            });
+            setTimeout(() => {
+            $(this).closest('form').submit();
+            }, 1500);
+            }
+    });
+    });
+    
+</script>
 @endsection

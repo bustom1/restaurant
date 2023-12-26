@@ -108,7 +108,8 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <button type="submit" class="btn btn-success text-center">Simpan</button>
+                        <button type="button" class="btn btn-success text-center "
+                            id="swalDefaultSuccess">Simpan</button>
                         <button class="btn btn-danger text-center ml-3"><a class="text-light"
                                 href="{{ route('produk.index') }}">kembali</i></a></button>
                     </div>
@@ -117,5 +118,43 @@
         </div>
     </section>
 </div>
+
+@endsection
+@section('javascript')
+
+<script>
+    $(function () {
+        $('#swalDefaultSuccess').click(function (e) {
+        e.preventDefault();
+        
+        Swal.close();
+        
+        // Mengecek apakah ada kolom yang tidak diisi
+            var emptyFields = $(this).closest('form').find('input[type="text"], input[type="password"]').filter(function () {
+            return $.trim($(this).val()) === '';
+            });
+        
+        if (emptyFields.length > 0) {
+            // Jika ada kolom yang tidak diisi, tidak menampilkan alert
+            $(this).closest('form').submit();
+        } else {
+            // Menampilkan alert sukses dan mengirimkan formulir
+            Swal.fire({
+            position: 'top-end',
+            icon: "success",
+            title: "Data berhasil diubah",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        
+        setTimeout(() => {
+            $(this).closest('form').submit();
+                }, 1500);
+            }
+        });
+            
+            
+    });
+</script>
 
 @endsection

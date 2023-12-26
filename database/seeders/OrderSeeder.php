@@ -14,20 +14,20 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        $order=Order::create([
+        $order = Order::create([
             'user_id' => '3',
             'no_order' => '100',
             'bayar' => '20000',
             'total_bayar' => '2000',
-            'status' => 'proses'
+            'status' => 'Proses'
         ]);
 
-        $order=Order::create([
+        $order = Order::create([
             'user_id' => '4',
             'no_order' => '9',
             'bayar' => '10000',
             'total_bayar' => '90',
-            'status' => 'bayar'
+            'status' => 'Bayar'
         ]);
     }
 }

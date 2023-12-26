@@ -98,14 +98,15 @@
                         <label for="produk" class="col-sm-2 col-form-label">Deskripsi Produk</label>
                         <div class="col-sm-10">
                             <textarea name="deskripsi_produks" type="text" class="form-control" id="produk"
-                                value="{{ old('deskripsi_produks') }}"></textarea>
+                                value="{{ old('deskripsi_produks') }}">{{ old('deskripsi_produks') }}</textarea>
                             @error('deskripsi_produks')
                             <small class="text-red">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <button type="submit" class="btn btn-success text-center">Tambah</button>
+                        <button type="button" class="btn btn-success text-center"
+                            id="swalDefaultSuccess">Tambah</button>
                         <button class="btn btn-danger text-center ml-3"><a class="text-light"
                                 href="{{ route('produk.index') }}">kembali</i></a></button>
                     </div>
@@ -118,4 +119,31 @@
 </div>
 </section>
 </div>
+@endsection
+
+@section('javascript')
+
+<script>
+    $(function () {
+        $('#swalDefaultSuccess').click(function (e) { 
+            e.preventDefault();
+            
+            Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Data berhasil di tambahkan",
+            showConfirmButton: false,
+            timer: 1500
+            });
+            
+            setTimeout(() => {
+            $(this).closest('form').submit();
+            }, 1500);
+
+        });
+            
+            
+    });
+</script>
+
 @endsection

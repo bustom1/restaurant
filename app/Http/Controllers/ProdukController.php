@@ -26,6 +26,7 @@ class ProdukController extends Controller
         });
         $kategori = ProdukKategory::all();
         $produks = Produk::all();
+
         return view('manager.product.index', compact('produks', 'kategori'));
     }
 

@@ -130,7 +130,7 @@
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
                             </button>
-                            <div class="btn-group">
+                            {{-- <div class="btn-group">
                                 <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
                                     <i class="fas fa-wrench"></i>
                                 </button>
@@ -144,13 +144,14 @@
                             </div>
                             <button type="button" class="btn btn-tool" data-card-widget="remove">
                                 <i class="fas fa-times"></i>
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body bg-secondary">
                         <div class="row">
                             <div class="col">
+
                                 @php
                                 $bulan = now()->month; // Mengambil bulan saat ini
                                 $salesMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
@@ -173,7 +174,7 @@
                                                     <th>No</th>
                                                     <th>Order ID</th>
                                                     <th>No Ordder</th>
-                                                    <th>No Meja</th>
+                                                    <th>Nama</th>
                                                     <th>Status</th>
                                                     <th>Total Terbayar</th>
                                                 </tr>
@@ -188,7 +189,7 @@
                                                             }}</a>
                                                     </td>
                                                     <td>{{ $row->no_order }}</td>
-                                                    <td>M-{{ $row->user_id }}</td>
+                                                    <td>{{ $row->user_id }}</td>
                                                     <td><span class="badge {{ ($row->status == 'Bayar')? 'badge-success' :
                                                     'badge-warning';}}  ">{{ $row->status
                                                             }}
@@ -214,6 +215,7 @@
                             </div>
                             <!-- /.col -->
 
+                            {{-- /.row --}}
                         </div>
                         <!-- /.row -->
                         <div class="row bg-dark pt-2">
@@ -285,7 +287,10 @@
                                     @php
                                     $bulan = now()->month();
                                     // mengambil data order sesuai orderan di bulan tertentu
-                                    $totalBayarMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
+                                    $totalBayarMonthly = \App\Models\Order::whereMonth('created_at', $bulan)
+                                    ->where('status', 'Bayar')
+                                    ->get();
+
                                     $totalTerbayar = $totalBayarMonthly->sum('total_bayar');
                                     $targetMonth = 10000000;
                                     $persentaseTotalBayar = ($totalTerbayar / $targetMonth) * 100;
@@ -311,10 +316,19 @@
                                     @php
                                     $bulan = now()->month();
                                     // mengambil data order sesuai orderan di bulan tertentu
-                                    $totalBayarMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
+                                    $totalBayarMonthly = \App\Models\Order::whereMonth('created_at', $bulan)
+                                    ->where('status', 'Bayar')
+                                    ->get();
+                                    // Menghitung total terbayar berdasarkan order yang sudah dibayar
+                                    $totalTerbayar = $totalBayarMonthly->sum('total_bayar');
+
                                     $targetProfit_bulan = 100000000;
                                     $modal = 10000000;
+
+                                    // Menghitung keuntungan
                                     $keuntungan = $totalTerbayar - $modal;
+
+                                    // Menghitung persentase keuntungan
                                     $persentaseKeuntungan = ($keuntungan / $targetProfit_bulan) * 100;
                                     // icon persentase
                                     $iconPersentase = ($keuntungan > 0)? 'fas fa-caret-up text-success' : 'fas
@@ -334,9 +348,25 @@
                             <!-- /.col -->
                             <div class="col-md-3">
                                 <div class="description-block ">
-                                    <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i>
-                                        80%</span>
-                                    <h5 class="description-header">100</h5>
+                                    @php
+                                    $bulan = now()->month();
+                                    // mengambil data order sesuai orderan di bulan tertentu
+                                    $orderMonthly = \App\Models\Order::whereMonth('created_at', $bulan)->get();
+                                    $totalOrder = $orderMonthly->count();
+                                    $targetOrder = 1000;
+                                    $persentaseOrder = ($totalOrder/$targetOrder)*100;
+
+                                    // icon persentase
+                                    $iconPersentase = ($totalOrder > 0)? 'fas fa-caret-up text-success' : 'fas
+                                    fa-caret-down text-danger';
+                                    $descPersentase = ($totalOrder > 0)? 'description-percentage text-success' :
+                                    'description-percentage text-danger';
+                                    $textTotal = ($totalOrder > 0 )? 'text-success': 'text-danger';
+                                    @endphp
+                                    <span class="description-percentage {{ $descPersentase }} "><i
+                                            class="fas {{ $iconPersentase }}"></i>
+                                        {{ $persentaseOrder }}%</span>
+                                    <h5 class="description-header {{ $textTotal }}">{{ $totalOrder }}</h5>
                                     <span class="description-text">PENCAPAIAN TARGET</span>
                                 </div>
                                 <!-- /.description-block -->
@@ -344,7 +374,6 @@
                             <!-- /.col -->
 
                         </div>
-                        {{-- /.row --}}
                     </div>
                     <!-- ./card-body -->
                 </div>
