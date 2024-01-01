@@ -22,9 +22,11 @@ class ManagerController extends Controller
     {
         $produks = Produk::all();
         $users = User::all();
-        $orders = Order::all();
+        $orders = Order::with(['User'])->get();
         $order_detail = OrderDetail::all();
         $ratings = ReviewRating::all();
+
+        // return $orders;
         return view('manager.dashboard-manager', compact('produks', 'users', 'orders', 'ratings', 'order_detail'));
     }
 

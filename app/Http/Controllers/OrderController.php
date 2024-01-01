@@ -22,9 +22,10 @@ class OrderController extends Controller
     public function index()
     {
         // menampilkan list yang order dari users yang login
-        $orders = Order::with(['OrderDetail', 'User'])->get();
+        $orders = Order::with(['OrderDetail', 'OrderDetail.Produk', 'User'])->get();
         $cartItems = Cart::content();
 
+        // return $orders;
         return view('order.index', compact('orders', 'cartItems'))->with('payment_notification', session('payment_notification'));;
     }
 
@@ -143,9 +144,11 @@ class OrderController extends Controller
             'total_bayar' => 'required',
             'status' => 'required'
         ]);
+        $pembayaran = $request->total_bayar - $request->bayar;
+
         $order->no_order = $request->no_order;
         $order->bayar = $request->bayar;
-        $order->total_bayar = $request->total_bayar;
+        $order->total_bayar = $pembayaran;
         $order->status = $request->status;
 
         if ($order->update()) {

@@ -125,7 +125,10 @@
          <li class="nav-item d-none d-sm-inline-block dropdown pl-3">
             <a href="{{ route('logout') }}"
                 onclick="event.preventDefault();
-            document.getElementById('logout-form').submit();"><i class=""></i> Logout</a>&nbsp;
+            document.getElementById('logout-form').submit();" class="btn btn-danger">
+            {{-- <i class=""></i>  --}}
+            Keluar
+            </a>&nbsp;
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf

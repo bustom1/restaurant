@@ -24,9 +24,9 @@ class OrderDetail extends Model
         return $this->hasMany(OrderDetail::class, 'order_id');
     }
 
-    // // order detail memilki 1 paket saja
+    // satu order detail menampilakn 1 id produks
     public function Produk()
     {
-        return $this->belongsTo(Produk::class);
+        return $this->belongsTo(Produk::class, 'produk_id');
     }
 }
