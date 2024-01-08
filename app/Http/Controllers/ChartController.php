@@ -19,6 +19,7 @@ class ChartController extends Controller
     {
         // $cartItems = Cart::count();
         $cartItems = Cart::content();
+        // return $cartItems;
         return view('order.show', compact('cartItems'));
     }
 

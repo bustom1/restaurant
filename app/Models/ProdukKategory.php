@@ -12,9 +12,10 @@ class ProdukKategory extends Model
     protected $guarded = ['id_produk_kategories'];
     // protected $fillable = ['nama_kategori'];
 
-    public function produks()
+    public function Produks()
     {
-        return $this->hasMany(Produk::class, 'id_produks');
+        return $this->hasMany(Produk::class, 'kategori_produks', 'id_produk_kategories');
     }
+
     protected $table = 'tbl_produk_kategories';
 }

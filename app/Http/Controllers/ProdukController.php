@@ -25,8 +25,9 @@ class ProdukController extends Controller
             return "Rp. <?php echo number_format($expression,0,',','.'); ?>";
         });
         $kategori = ProdukKategory::all();
-        $produks = Produk::all();
+        $produks = Produk::with(['ProdukKategory'])->get();
 
+        // return $produks;
         return view('manager.product.index', compact('produks', 'kategori'));
     }
 

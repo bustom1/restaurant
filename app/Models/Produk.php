@@ -16,6 +16,11 @@ class Produk extends Model
 
     public function ProdukKategory()
     {
-        return $this->belongsTo(ProdukKategory::class, 'id_produk_kategories');
+        return $this->belongsTo(ProdukKategory::class, 'kategori_produks', 'id_produk_kategories');
+    }
+
+    public function OrderDetail()
+    {
+        return $this->hasMany(OrderDetail::class);
     }
 }
